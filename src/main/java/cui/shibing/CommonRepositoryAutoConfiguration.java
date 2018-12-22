@@ -1,6 +1,7 @@
 package cui.shibing;
 
 import cui.shibing.commonrepository.CommonRepositoryImpl;
+import cui.shibing.commonrepository.CommonRepositoryImpl1;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -64,9 +65,9 @@ public class CommonRepositoryAutoConfiguration implements BeanFactoryAware, Impo
             });
         });
         entityClazzes.forEach(clazz -> {
-            BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.rootBeanDefinition(CommonRepositoryImpl.class);
+            BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.rootBeanDefinition(CommonRepositoryImpl1.class);
             beanDefinitionBuilder.addConstructorArgValue(clazz);
-            beanDefinitionBuilder.addConstructorArgReference("entityManagerFactory");
+//            beanDefinitionBuilder.addConstructorArgReference("entityManagerFactory");
             AbstractBeanDefinition rawBeanDefinition = beanDefinitionBuilder.getRawBeanDefinition();
             rawBeanDefinition.setLazyInit(true);
             registry.registerBeanDefinition(clazz.getSimpleName(), rawBeanDefinition);
