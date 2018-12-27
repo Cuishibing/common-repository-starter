@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public class CommonRepositoryImpl<T, ID> implements CommonRepository<T, ID> {
     @PersistenceContext
-    private EntityManager entityManager;
+    protected EntityManager entityManager;
     private Class<T> domainClass;
     private SimpleJpaRepository<T, ID> internalJpaIml;
 
