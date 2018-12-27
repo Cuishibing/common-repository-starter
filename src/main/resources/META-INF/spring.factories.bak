@@ -1,2 +1,3 @@
 # Auto Configure
+# NOT USED
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=cui.shibing.CommonRepositoryAutoConfiguration
