@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.support.CrudMethodMetadata;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,7 +17,7 @@ import java.util.Optional;
 public class CommonRepositoryImpl<T, ID> implements CommonRepository<T, ID> {
     @PersistenceContext
     protected EntityManager entityManager;
-    private Class<T> domainClass;
+    protected Class<T> domainClass;
     private SimpleJpaRepository<T, ID> internalJpaIml;
 
     public CommonRepositoryImpl(Class<T> domainClass) {
@@ -65,31 +66,37 @@ public class CommonRepositoryImpl<T, ID> implements CommonRepository<T, ID> {
         return requireInternalJpaIml().count();
     }
 
+    @Transactional
     @Override
     public void deleteById(ID id) {
         requireInternalJpaIml().deleteById(id);
     }
 
+    @Transactional
     @Override
     public void delete(T entity) {
         requireInternalJpaIml().delete(entity);
     }
 
+    @Transactional
     @Override
     public void deleteAll(Iterable<? extends T> entities) {
         requireInternalJpaIml().deleteAll(entities);
     }
 
+    @Transactional
     @Override
     public void deleteAll() {
         requireInternalJpaIml().deleteAll();
     }
 
+    @Transactional
     @Override
     public <S extends T> S save(S entity) {
         return requireInternalJpaIml().save(entity);
     }
 
+    @Transactional
     @Override
     public <S extends T> List<S> saveAll(Iterable<S> entities) {
         return requireInternalJpaIml().saveAll(entities);
@@ -105,21 +112,25 @@ public class CommonRepositoryImpl<T, ID> implements CommonRepository<T, ID> {
         return requireInternalJpaIml().existsById(id);
     }
 
+    @Transactional
     @Override
     public void flush() {
         requireInternalJpaIml().flush();
     }
 
+    @Transactional
     @Override
     public <S extends T> S saveAndFlush(S entity) {
         return requireInternalJpaIml().saveAndFlush(entity);
     }
 
+    @Transactional
     @Override
     public void deleteInBatch(Iterable<T> entities) {
         requireInternalJpaIml().deleteInBatch(entities);
     }
 
+    @Transactional
     @Override
     public void deleteAllInBatch() {
         requireInternalJpaIml().deleteAllInBatch();
