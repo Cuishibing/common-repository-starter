@@ -1,6 +1,5 @@
-package cui.shibing;
+package cui.shibing.commonrepository.config;
 
-import cui.shibing.commonrepository.CommonRepository;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -19,6 +18,8 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.ClassUtils;
+
+import cui.shibing.commonrepository.CommonRepository;
 
 import javax.persistence.Entity;
 import java.util.HashSet;

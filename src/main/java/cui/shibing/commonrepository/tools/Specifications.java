@@ -1,4 +1,4 @@
-package cui.shibing.commonrepository;
+package cui.shibing.commonrepository.tools;
 
 import org.springframework.data.jpa.domain.Specification;
 

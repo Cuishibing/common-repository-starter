@@ -5,7 +5,7 @@
 ## 配置
 + pom引入依赖
 
-首先引入spring boot parent依赖,然后引入本项目，项目类依赖了spring boot jpa
+首先引入spring boot parent依赖,然后引入本项目
 ````
 <parent>
     <groupId>org.springframework.boot</groupId>
@@ -74,6 +74,3 @@ public List<Person> persons() {
     @Resource(name = "Person")
     private CustomCommonRepository<Person, Integer> equalRedPackageCRepository;
     ````
-    
-
-
