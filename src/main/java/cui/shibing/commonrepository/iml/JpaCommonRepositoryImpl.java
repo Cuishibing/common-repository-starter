@@ -1,20 +1,20 @@
 package cui.shibing.commonrepository.iml;
 
+import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.support.CrudMethodMetadata;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import cui.shibing.commonrepository.CommonRepository;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.List;
-import java.util.Optional;
 
 public class JpaCommonRepositoryImpl<T, ID> implements CommonRepository<T, ID> {
 	@PersistenceContext
@@ -24,13 +24,7 @@ public class JpaCommonRepositoryImpl<T, ID> implements CommonRepository<T, ID> {
 
 	public JpaCommonRepositoryImpl(Class<T> domainClass) {
 		this.domainClass = domainClass;
-	}
-
-	private SimpleJpaRepository<T, ID> requireInternalJpaIml() {
-		if (internalJpaIml == null) {
-			internalJpaIml = new SimpleJpaRepository<>(domainClass, entityManager);
-		}
-		return internalJpaIml;
+		this.internalJpaIml = new SimpleJpaRepository<>(domainClass, entityManager);
 	}
 
 	@Override
@@ -40,156 +34,156 @@ public class JpaCommonRepositoryImpl<T, ID> implements CommonRepository<T, ID> {
 
 	@Override
 	public List<T> findAll() {
-		return requireInternalJpaIml().findAll();
+		return this.internalJpaIml.findAll();
 	}
 
 	@Override
 	public List<T> findAll(Sort sort) {
-		return requireInternalJpaIml().findAll(sort);
+		return this.internalJpaIml.findAll(sort);
 	}
 
 	@Override
 	public Page<T> findAll(Pageable pageable) {
-		return requireInternalJpaIml().findAll(pageable);
+		return this.internalJpaIml.findAll(pageable);
 	}
 
 	@Override
 	public List<T> findAllById(Iterable<ID> ids) {
-		return requireInternalJpaIml().findAllById(ids);
+		return this.internalJpaIml.findAllById(ids);
 	}
 
 	@Override
 	public long count() {
-		return requireInternalJpaIml().count();
+		return this.internalJpaIml.count();
 	}
 
 	@Transactional
 	@Override
 	public void deleteById(ID id) {
-		requireInternalJpaIml().deleteById(id);
+		this.internalJpaIml.deleteById(id);
 	}
 
 	@Transactional
 	@Override
 	public void delete(T entity) {
-		requireInternalJpaIml().delete(entity);
+		this.internalJpaIml.delete(entity);
 	}
 
 	@Transactional
 	@Override
 	public void deleteAll(Iterable<? extends T> entities) {
-		requireInternalJpaIml().deleteAll(entities);
+		this.internalJpaIml.deleteAll(entities);
 	}
 
 	@Transactional
 	@Override
 	public void deleteAll() {
-		requireInternalJpaIml().deleteAll();
+		this.internalJpaIml.deleteAll();
 	}
 
 	@Transactional
 	@Override
 	public <S extends T> S save(S entity) {
-		return requireInternalJpaIml().save(entity);
+		return this.internalJpaIml.save(entity);
 	}
 
 	@Transactional
 	@Override
 	public <S extends T> List<S> saveAll(Iterable<S> entities) {
-		return requireInternalJpaIml().saveAll(entities);
+		return this.internalJpaIml.saveAll(entities);
 	}
 
 	@Override
 	public Optional<T> findById(ID id) {
-		return requireInternalJpaIml().findById(id);
+		return this.internalJpaIml.findById(id);
 	}
 
 	@Override
 	public boolean existsById(ID id) {
-		return requireInternalJpaIml().existsById(id);
+		return this.internalJpaIml.existsById(id);
 	}
 
 	@Transactional
 	@Override
 	public void flush() {
-		requireInternalJpaIml().flush();
+		this.internalJpaIml.flush();
 	}
 
 	@Transactional
 	@Override
 	public <S extends T> S saveAndFlush(S entity) {
-		return requireInternalJpaIml().saveAndFlush(entity);
+		return this.internalJpaIml.saveAndFlush(entity);
 	}
 
 	@Transactional
 	@Override
 	public void deleteInBatch(Iterable<T> entities) {
-		requireInternalJpaIml().deleteInBatch(entities);
+		this.internalJpaIml.deleteInBatch(entities);
 	}
 
 	@Transactional
 	@Override
 	public void deleteAllInBatch() {
-		requireInternalJpaIml().deleteAllInBatch();
+		this.internalJpaIml.deleteAllInBatch();
 	}
 
 	@Override
 	public T getOne(ID id) {
-		return requireInternalJpaIml().getOne(id);
+		return this.internalJpaIml.getOne(id);
 	}
 
 	@Override
 	public <S extends T> Optional<S> findOne(Example<S> example) {
-		return requireInternalJpaIml().findOne(example);
+		return this.internalJpaIml.findOne(example);
 	}
 
 	@Override
 	public <S extends T> List<S> findAll(Example<S> example) {
-		return requireInternalJpaIml().findAll(example);
+		return this.internalJpaIml.findAll(example);
 	}
 
 	@Override
 	public <S extends T> List<S> findAll(Example<S> example, Sort sort) {
-		return requireInternalJpaIml().findAll(example, sort);
+		return this.internalJpaIml.findAll(example, sort);
 	}
 
 	@Override
 	public <S extends T> Page<S> findAll(Example<S> example, Pageable pageable) {
-		return requireInternalJpaIml().findAll(example, pageable);
+		return this.internalJpaIml.findAll(example, pageable);
 	}
 
 	@Override
 	public <S extends T> long count(Example<S> example) {
-		return requireInternalJpaIml().count(example);
+		return this.internalJpaIml.count(example);
 	}
 
 	@Override
 	public <S extends T> boolean exists(Example<S> example) {
-		return requireInternalJpaIml().exists(example);
+		return this.internalJpaIml.exists(example);
 	}
 
 	@Override
 	public Optional<T> findOne(Specification<T> spec) {
-		return requireInternalJpaIml().findOne(spec);
+		return this.internalJpaIml.findOne(spec);
 	}
 
 	@Override
 	public List<T> findAll(Specification<T> spec) {
-		return requireInternalJpaIml().findAll(spec);
+		return this.internalJpaIml.findAll(spec);
 	}
 
 	@Override
 	public Page<T> findAll(Specification<T> spec, Pageable pageable) {
-		return requireInternalJpaIml().findAll(spec, pageable);
+		return this.internalJpaIml.findAll(spec, pageable);
 	}
 
 	@Override
 	public List<T> findAll(Specification<T> spec, Sort sort) {
-		return requireInternalJpaIml().findAll(spec, sort);
+		return this.internalJpaIml.findAll(spec, sort);
 	}
 
 	@Override
 	public long count(Specification<T> spec) {
-		return requireInternalJpaIml().count(spec);
+		return this.internalJpaIml.count(spec);
 	}
 }
