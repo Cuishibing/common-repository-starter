@@ -3,6 +3,7 @@ package cui.shibing.commonrepository.iml;
 import java.util.List;
 import java.util.Optional;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -24,6 +25,10 @@ public class JpaCommonRepositoryImpl<T, ID> implements CommonRepository<T, ID> {
 
 	public JpaCommonRepositoryImpl(Class<T> domainClass) {
 		this.domainClass = domainClass;
+	}
+	
+	@PostConstruct
+	public void postConstruct() {
 		this.internalJpaIml = new SimpleJpaRepository<>(domainClass, entityManager);
 	}
 
