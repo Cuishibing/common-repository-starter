@@ -1,8 +1,5 @@
 package cui.shibing.commonrepository.iml.mybatis;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,24 +8,15 @@ import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.persistence.Entity;
 
-import org.apache.ibatis.executor.result.DefaultResultHandler;
-import org.apache.ibatis.javassist.tools.reflect.Metaobject;
-import org.apache.ibatis.reflection.MetaObject;
-import org.apache.ibatis.reflection.wrapper.BeanWrapper;
-import org.apache.ibatis.reflection.wrapper.ObjectWrapper;
 import org.apache.ibatis.session.Configuration;
-import org.apache.ibatis.session.ResultContext;
-import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.util.ReflectionUtils;
 
 import cui.shibing.commonrepository.CommonRepository;
 
@@ -61,45 +49,15 @@ public class MybatisCommonRepositoryImpl<T, ID> implements CommonRepository<T, I
 	
 	@Override
 	public List<T> findAll() {
-	
 		Entity entityAnnEntity = domainClass.getAnnotation(Entity.class);
 		String tableName = entityAnnEntity.name();
-		List<T> result = new ArrayList<>();
 		try(SqlSession session = sessionFactory.openSession()){
 			Map<String, Object> parameterMap = new HashMap<>();
 			parameterMap.put("table", tableName);
 			parameterMap.put("columns", EntityInfoHolder.getEntityInfo(domainClass, isMapUnderscoreToCamelCase).getAllColumnNames());
-			
-			session.select(MybatisCommonRepository.findAll, parameterMap,new ResultHandler() {
-
-				@Override
-				public void handleResult(ResultContext resultContext) {
-					Object resultObject = resultContext.getResultObject();
-					
-					Map<String, Object> resultMap = (Map<String, Object>) resultObject;
-					try {
-						T oneRow = domainClass.newInstance();
-						MetaObject metaObject = configuration.newMetaObject(oneRow);
-						resultMap.forEach((key,value)->{
-							String findProperty = metaObject.findProperty(key, isMapUnderscoreToCamelCase);
-							if(findProperty != null && metaObject.hasSetter(findProperty)) {
-								Class<?> type = metaObject.getSetterType(findProperty);
-								if(value != null && type.equals(value.getClass())) {
-									metaObject.setValue(findProperty, value);
-								}
-							}
-						});
-						
-						result.add(oneRow);
-					} catch (InstantiationException | IllegalAccessException e) {
-						e.printStackTrace();
-						throw new RuntimeException(e);
-					}
-				}
-				
-				
-			});
-			return result;
+			CommonListResultHandler<T> commonResultHandler = new CommonListResultHandler<>(configuration, domainClass);
+			session.select(MybatisCommonRepository.findAll, parameterMap,commonResultHandler);
+			return commonResultHandler.getResult();
 		}
 	}
 

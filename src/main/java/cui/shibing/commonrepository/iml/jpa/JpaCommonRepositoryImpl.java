@@ -1,4 +1,4 @@
-package cui.shibing.commonrepository.iml;
+package cui.shibing.commonrepository.iml.jpa;
 
 import java.util.List;
 import java.util.Optional;
