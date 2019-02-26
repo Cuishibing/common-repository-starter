@@ -1,5 +1,6 @@
 # common-repository-starter
-基于Spring JPA的通用Repository自动配置,单表操作都可以通过一个通用的CommonRepository完成,避免写很多重复代码
+基于Spring JPA的通用Repository自动配置,单表操作都可以通过一个通用的CommonRepository完成,避免写很多重复代码。
+目前实现了JPA，MyBatis实现还未完成
 
 对于每一个被@Entity注解注释的类都生成一个对应的通用Repository对象
 ## 配置
