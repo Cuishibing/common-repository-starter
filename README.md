@@ -1,8 +1,8 @@
 # common-repository-starter
-基于Spring JPA的通用Repository自动配置,单表操作都可以通过一个通用的CommonRepository完成,避免写很多重复代码。
-目前实现了JPA，MyBatis实现还未完成
+基于Spring JPA的通用Repository自动配置,单表操作都可以通过一个通用的CommonRepository完成,避免写很多重复代码.
+目前实现了JPA,MyBatis实现还未完成
 
-对于每一个被@Entity注解注释的类都生成一个对应的通用Repository对象
+对于每一个被@Entity注解注释的类都生成一个对应的通用Repository对象,可以很方便的进行常用的CRUD操作.
 ## 配置
 + pom引入依赖
 
@@ -22,9 +22,9 @@
 ````
 + 启动类配置
 
-给启动类加上@EnableCommonRepository注解,参数为通用Repository实现类,如果不加参数就使用默认的CommonRepositoryImpl
+给启动类加上@EnableCommonRepository注解,参数为通用Repository实现类,如果不加参数就使用默认的JpaCommonRepositoryImpl,也可以指定自定义的实现类(用于扩展现有功能).
 ````
-@EnableCommonRepository(CustomCommonRepositoryImpl.class)
+@EnableCommonRepository
 public class App {
     
 }
@@ -72,6 +72,13 @@ public List<Person> persons() {
     ````
     + 使用的时候注入自己新定义的接口
     ````
+    // 注入
     @Resource(name = "Person")
-    private CustomCommonRepository<Person, Integer> equalRedPackageCRepository;
+    private CustomCommonRepository<Person, Integer> personCommonRepository;
+    
+    // 使用
+    @GetMapping("echo")
+    public Person echo(Person person) {
+        return personCommonRepository.echo(person);
+    }
     ````
